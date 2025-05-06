@@ -5,24 +5,4 @@
     <h3>Code Comparison</h3>
     <div #editorContainer class="editor-container"></div>
   </div>
-
-  <div class="preview-section">
-    <h3>Content Comparison</h3>
-    <div class="preview-container">
-      <div class="preview-box">
-        <h4>Original Content</h4>
-        <div
-          class="preview-content"
-          [innerHTML]="originalPreview | safeHtml"
-        ></div>
-      </div>
-      <div class="preview-box">
-        <h4>Modified Content</h4>
-        <div
-          class="preview-content"
-          [innerHTML]="modifiedPreview | safeHtml"
-        ></div>
-      </div>
-    </div>
-  </div>
 </div>

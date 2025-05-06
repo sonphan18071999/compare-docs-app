@@ -60,7 +60,8 @@ export class DocumentComparisonComponent implements OnInit, AfterViewInit {
       <span lang="de-DE" style="font-family: 'Times New Roman', 'serif';font-size: 11pt;font-style: normal;font-weight: bold;margin: 0;padding: 0;">amen und Herren,</span>
     </p>
     <p dir="ltr" style="font-family: 'Times New Roman', 'serif';font-size: 11pt;line-height: 108%;margin-bottom: .001pt;margin-left: 0;margin-right: 0;margin-top: 0;">
-      <span lang="de-DE" style="font-family: 'Times New Roman', 'serif';font-size: 11pt;font-style: normal;font-weight: normal;margin: 0;padding: 0;">Mit freundlichen Grüßen</span>
+      <span lang="de-DE" style="font-family: 'Times New Roman', 'serif';font-size: 11pt;font-style: normal;font-weight: normal;margin: 0;padding: 0;">Mit freundlichen Grüßen hello</span>
+      <span lang="de-DE" >my baby hello</span>
     </p>
   </div>
 </body>
@@ -70,7 +71,7 @@ export class DocumentComparisonComponent implements OnInit, AfterViewInit {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8" />
-  <title>Converted Document</title>
+  <title>Converted Documents</title>
   <meta name="Generator" content="PowerTools for Open XML" />
   <style>
     span { 
