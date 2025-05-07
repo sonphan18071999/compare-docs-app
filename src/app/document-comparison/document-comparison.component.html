@@ -5,4 +5,15 @@
     <h3>Code Comparison</h3>
     <div #editorContainer class="editor-container"></div>
   </div>
+
+  <div class="preview-section">
+    <div class="preview-container">
+      <h3>Original HTML</h3>
+      <div class="preview-content" [innerHTML]="originalPreview"></div>
+    </div>
+    <div class="preview-container">
+      <h3>Modified HTML</h3>
+      <div class="preview-content" [innerHTML]="modifiedPreview"></div>
+    </div>
+  </div>
 </div>
