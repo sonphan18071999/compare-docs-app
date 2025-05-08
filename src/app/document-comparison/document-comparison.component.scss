@@ -1,8 +1,105 @@
+.files-upload-container {
+  margin: 20px 0;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.file-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.file-name {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.9em;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  word-break: break-all;
+
+  .file-icon {
+    font-size: 1.1em;
+    color: #4a90e2;
+  }
+}
+
+.file-upload {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+
+  label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+      content: '📄';
+      font-size: 1.2em;
+    }
+  }
+
+  input[type="file"] {
+    position: relative;
+    padding: 12px;
+    border: 2px dashed #cbd5e0;
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    color: transparent;
+
+    &::file-selector-button {
+      padding: 8px 16px;
+      border-radius: 6px;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+      margin-right: 12px;
+    }
+
+    &::file-selector-button:hover {
+      background-color: #357abd;
+    }
+
+    &:hover {
+      border-color: #4a90e2;
+      background-color: #f8fafc;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #4a90e2;
+      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    }
+  }
+}
+
 .editor-container {
   height: 300px;
   min-height: 300px;
-  border: 1px solid #ccc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
   margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .preview-section {
@@ -12,13 +109,69 @@
 
 .preview-container {
   flex: 1;
-  border: 1px solid #ccc;
-  padding: 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
 }
 
 .preview-content {
   max-height: 300px;
   overflow: auto;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+}
+
+.compare-button-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.compare-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: white;
+  background-color: #4a90e2;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background-color: #357abd;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .button-icon {
+    font-size: 1.2em;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
 }
 
 // .document-comparison-container {

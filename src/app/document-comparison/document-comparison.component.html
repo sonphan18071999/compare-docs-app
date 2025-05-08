@@ -1,6 +1,46 @@
 <div class="document-comparison-container">
   <h2>Document Comparison</h2>
 
+  <div class="files-upload-container">
+    <div class="file-upload">
+      <label for="originalFile">Original Document:</label>
+      <div class="file-input-wrapper">
+        <input
+          type="file"
+          id="originalFile"
+          accept=".html,.htm,.doc,.docx"
+          (change)="onFileChange($event, 'original')"
+        />
+        <div class="file-name" *ngIf="originalFileName">
+          <span class="file-icon">📄</span>
+          {{ originalFileName }}
+        </div>
+      </div>
+    </div>
+    <div class="file-upload">
+      <label for="modifiedFile">Modified Document:</label>
+      <div class="file-input-wrapper">
+        <input
+          type="file"
+          id="modifiedFile"
+          accept=".html,.htm,.doc,.docx"
+          (change)="onFileChange($event, 'modified')"
+        />
+        <div class="file-name" *ngIf="modifiedFileName">
+          <span class="file-icon">📄</span>
+          {{ modifiedFileName }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="compare-button-container">
+    <button class="compare-button" (click)="compareFiles()">
+      <span class="button-icon">🔄</span>
+      Compare Files
+    </button>
+  </div>
+
   <div class="comparison-section">
     <h3>Code Comparison</h3>
     <div #editorContainer class="editor-container"></div>
