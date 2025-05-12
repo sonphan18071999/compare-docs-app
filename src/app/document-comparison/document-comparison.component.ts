@@ -5,11 +5,12 @@ import {
   ViewChild,
   ElementRef,
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as monaco from 'monaco-editor';
-import { SafeHtmlPipe } from '../safe-html.pipe';
+import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { FileConverterService } from '../services/file-converter.service';
 
 interface DiffChange {
   value: string;
@@ -36,8 +37,8 @@ export class DocumentComparisonComponent implements OnInit, AfterViewInit {
   public modifiedFileName: string = '';
   public originalHTML = '';
   public modifiedHTML = '';
-  public originalPreview: string = '';
-  public modifiedPreview: string = '';
+  public originalPreview: SafeHtml = '';
+  public modifiedPreview: SafeHtml = '';
 
   public getCleanText(html: string): string {
     const parser = new DOMParser();
@@ -102,57 +103,39 @@ export class DocumentComparisonComponent implements OnInit, AfterViewInit {
     return result;
   }
 
-  constructor(private sanitizer: DomSanitizer, private http: HttpClient) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private http: HttpClient,
+    private safeHtmlPipe: SafeHtmlPipe,
+    private fileConverter: FileConverterService
+  ) {}
 
   ngOnInit(): void {
-    this.originalPreview = this.originalHTML;
-    this.modifiedPreview = this.modifiedHTML;
+    this.initializeMonaco();
   }
 
   ngAfterViewInit(): void {
-    this.initMonacoEditor();
+    this.initializeMonaco();
   }
 
-  private initMonacoEditor(): void {
-    if (!this.editorContainer) return;
-
-    // Set up editor options
-    const options: monaco.editor.IDiffEditorConstructionOptions = {
-      renderSideBySide: true,
-      automaticLayout: true,
-      readOnly: true,
-      originalEditable: false,
-      diffAlgorithm: 'advanced',
-      ignoreTrimWhitespace: false,
-    };
-
-    // Create diff editor and manually set theme afterward
-    this.editor = monaco.editor.createDiffEditor(
-      this.editorContainer.nativeElement,
-      options
-    );
-
-    // Set theme
-    monaco.editor.setTheme('vs');
-
-    // Create models
-    const originalModel = monaco.editor.createModel(
-      this.getCleanText(this.originalHTML),
-      'text'
-    );
-    const modifiedModel = monaco.editor.createModel(
-      this.getCleanText(this.modifiedHTML),
-      'text'
-    );
-
-    // Set models
-    this.editor.setModel({
-      original: originalModel,
-      modified: modifiedModel,
-    });
+  private initializeMonaco(): void {
+    if (this.editorContainer && !this.editor) {
+      this.editor = monaco.editor.createDiffEditor(
+        this.editorContainer.nativeElement,
+        {
+          readOnly: true,
+          renderSideBySide: true,
+          automaticLayout: true,
+          theme: 'vs-dark',
+        }
+      );
+    }
   }
 
-  onFileChange(event: Event, type: 'original' | 'modified'): void {
+  async onFileChange(
+    event: Event,
+    type: 'original' | 'modified'
+  ): Promise<void> {
     const input = event.target as HTMLInputElement;
     if (!input.files?.length) return;
 
@@ -166,46 +149,37 @@ export class DocumentComparisonComponent implements OnInit, AfterViewInit {
     }
   }
 
-  compareFiles(): void {
+  async compareFiles(): Promise<void> {
     if (!this.originalFile || !this.modifiedFile) {
-      alert('Please select both files to compare');
+      alert('Please select both original and modified files');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('originalFile', this.originalFile);
-    formData.append('modifiedFile', this.modifiedFile);
+    try {
+      // Convert files to HTML
+      const [originalHtml, modifiedHtml] = await Promise.all([
+        this.fileConverter.convertFileToHtml(this.originalFile),
+        this.fileConverter.convertFileToHtml(this.modifiedFile),
+      ]);
 
-    this.http.post('/api/compare', formData).subscribe({
-      next: (response: any) => {
-        this.originalHTML = response.originalContent;
-        this.modifiedHTML = response.modifiedContent;
-        this.originalPreview = response.originalContent;
-        this.modifiedPreview = response.modifiedContent;
-        this.updateEditor();
-      },
-      error: (error) => {
-        console.error('Error comparing files:', error);
-        alert('Error comparing files. Please try again.');
-      },
-    });
-  }
+      // Update the editor content
+      this.originalHTML = originalHtml;
+      this.modifiedHTML = modifiedHtml;
+      this.originalPreview = this.safeHtmlPipe.transform(originalHtml);
+      this.modifiedPreview = this.safeHtmlPipe.transform(modifiedHtml);
 
-  private updateEditor(): void {
-    if (!this.editor) return;
-
-    const originalModel = monaco.editor.createModel(
-      this.getCleanText(this.originalHTML),
-      'text'
-    );
-    const modifiedModel = monaco.editor.createModel(
-      this.getCleanText(this.modifiedHTML),
-      'text'
-    );
-
-    this.editor.setModel({
-      original: originalModel,
-      modified: modifiedModel,
-    });
+      // Update Monaco editor
+      if (this.editor) {
+        this.editor.setModel({
+          original: monaco.editor.createModel(originalHtml, 'html'),
+          modified: monaco.editor.createModel(modifiedHtml, 'html'),
+        });
+      }
+    } catch (error) {
+      console.error('Error comparing files:', error);
+      alert(
+        'Error comparing files. Please make sure the files are valid HTML or DOCX files.'
+      );
+    }
   }
 }
