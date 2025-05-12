@@ -6,6 +6,7 @@
   background-color: #f8f9fa;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
 }
 
 .file-input-wrapper {
@@ -174,6 +175,103 @@
   }
 }
 
+.comparison-result {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+
+  .result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e2e8f0;
+
+    h3 {
+      margin: 0;
+      color: #333;
+      font-size: 1.2em;
+    }
+  }
+
+  .status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+
+    &.identical {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    &.different {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  }
+
+  .result-details {
+    .result-metrics {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+
+      .metric {
+        flex: 1;
+        padding: 12px;
+        background-color: white;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+        .metric-label {
+          display: block;
+          font-size: 0.9em;
+          color: #666;
+          margin-bottom: 4px;
+        }
+
+        .metric-value {
+          font-size: 1.2em;
+          font-weight: 600;
+          color: #2c3e50;
+        }
+      }
+    }
+
+    .differences {
+      h4 {
+        margin: 0 0 10px 0;
+        color: #2c3e50;
+        font-size: 1.1em;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          padding: 8px 12px;
+          background-color: white;
+          border-radius: 6px;
+          margin-bottom: 8px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+          .diff-type {
+            font-weight: 600;
+            color: #4a90e2;
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+  }
+}
 // .document-comparison-container {
 //   padding: 20px;
 //   height: 100%;

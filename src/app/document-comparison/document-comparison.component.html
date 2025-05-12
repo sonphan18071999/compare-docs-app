@@ -41,6 +41,29 @@
     </button>
   </div>
 
+  <!-- Comparison Result Section -->
+  <div class="comparison-result" *ngIf="comparisonResult">
+    <div class="result-header">
+      <h3>Comparison Result</h3>
+      <div class="status-badge" [ngClass]="comparisonResult.similarity >= 95 ? 'identical' : 'different'">
+        {{ comparisonResult.similarity >= 95 ? 'Identical' : 'Different' }}
+      </div>
+    </div>
+    <div class="result-details">
+      <div class="result-metrics">
+        <div class="metric">
+          <span class="metric-label">Similarity Score:</span>
+          <span class="metric-value">{{ comparisonResult.similarity }}%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Levenshtein Distance:</span>
+          <span class="metric-value">{{ comparisonResult.distance }}</span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
   <div class="comparison-section">
     <h3>Code Comparison</h3>
     <div #editorContainer class="editor-container"></div>

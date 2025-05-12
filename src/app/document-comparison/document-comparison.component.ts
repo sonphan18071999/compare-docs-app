@@ -18,6 +18,15 @@ interface DiffChange {
   removed?: boolean;
 }
 
+interface ComparisonResult {
+  similarity: number;
+  distance: number;
+  differences?: Array<{
+    type: string;
+    description: string;
+  }>;
+}
+
 @Component({
   selector: 'app-document-comparison',
   templateUrl: './document-comparison.component.html',
@@ -39,6 +48,24 @@ export class DocumentComparisonComponent implements OnInit, AfterViewInit {
   public modifiedHTML = '';
   public originalPreview: SafeHtml = '';
   public modifiedPreview: SafeHtml = '';
+  comparisonResult: ComparisonResult | null = null;
+
+  // Mock data for testing
+  private mockComparisonResults: ComparisonResult[] = [
+    {
+      similarity: 100,
+      distance: 0,
+      differences: [],
+    },
+    {
+      similarity: 85,
+      distance: 42,
+      differences: [
+        { type: 'content', description: 'Different text in paragraph 3' },
+        { type: 'formatting', description: 'Different font size in section 2' },
+      ],
+    },
+  ];
 
   public getCleanText(html: string): string {
     const parser = new DOMParser();
@@ -175,6 +202,12 @@ export class DocumentComparisonComponent implements OnInit, AfterViewInit {
           modified: monaco.editor.createModel(modifiedHtml, 'html'),
         });
       }
+
+      // Mock the comparison result
+      this.comparisonResult =
+        this.mockComparisonResults[
+          Math.floor(Math.random() * this.mockComparisonResults.length)
+        ];
     } catch (error) {
       console.error('Error comparing files:', error);
       alert(
